@@ -1,3 +1,6 @@
+#include \<Wire.h\>
+#include "LCD03.h"
+
 const int numLeds = 10;
 const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
