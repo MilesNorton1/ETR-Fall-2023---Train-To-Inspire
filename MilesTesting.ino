@@ -1,18 +1,17 @@
-#include \<Wire.h\>
-#include "LCD03.h"
 
-const int numLeds = 10;
-const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
+const int numLeds = 3;
+const int ledPins[] = {2, 3, 4};
+const int pirPins[] = {5, 6, 7};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
-int whacksLeft = numWhacksToWin - whacksCounter; 
+//int whacksLeft = numWhacksToWin - whacksCounter; 
 
 
 int previousLedIndex = -1;
 
 void setup() {
+  Serial.begin(9600);
   // Initialize LED pins as outputs
   for (int i = 0; i < numLeds; i++) {
     pinMode(ledPins[i], OUTPUT);
@@ -28,9 +27,12 @@ void setup() {
 }
 
 void loop() {
+  
   // Check if the game is done
   if (whacksCounter >= numWhacksToWin) {
     // Game is done, you can add additional logic here if needed
+    
+    whacksCounter ++;
     return;
   }
 
@@ -51,26 +53,26 @@ void loop() {
 
   // Increment the whacks counter
   whacksCounter++;
-  whacksLeft = numWhacksToWin - whacksCounter; 
+  //whacksLeft = numWhacksToWin - whacksCounter; 
   
   // Delay before the next round
-  delay(500);
+  delay(1000);
 }
 
 int generateRandomLedIndex() {
   int randomIndex;
   do {
-    randomIndex = random(0, 11);
-  } while (randomIndex != previousLedIndex);
+    randomIndex = random(0, numLeds);
+  } while (randomIndex == previousLedIndex);
 
   return randomIndex;
 }
 
 void waitForWhack(int pirPin) {
   // Wait for the PIR sensor to be triggered
-  while (digitalRead(pirPin) == LOW) {
+  while (digitalRead(pirPin) == HIGH) {
     // You can add additional logic or actions while waiting if needed
   }
-
+  Serial.print(pirPin);
   // You can add additional logic or actions after the PIR sensor is triggered
 }
