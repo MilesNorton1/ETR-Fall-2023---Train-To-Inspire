@@ -2,8 +2,10 @@ const int numLeds = 10;
 const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
 
-int numWhacksToWin = 5;  // Set the number of whacks needed to win the game
+int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
+int whacksLeft = numWhacksToWin - whacksCounter; 
+
 
 int previousLedIndex = -1;
 
@@ -46,16 +48,17 @@ void loop() {
 
   // Increment the whacks counter
   whacksCounter++;
-
+  whacksLeft = numWhacksToWin - whacksCounter; 
+  
   // Delay before the next round
-  delay(1000);
+  delay(500);
 }
 
 int generateRandomLedIndex() {
   int randomIndex;
   do {
-    randomIndex = random(0, numLeds);
-  } while (randomIndex == previousLedIndex);
+    randomIndex = random(0, 11);
+  } while (randomIndex != previousLedIndex);
 
   return randomIndex;
 }
