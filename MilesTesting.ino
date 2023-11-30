@@ -8,7 +8,7 @@ const int pirPins[] = {5, 6, 7};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
-//int whacksLeft = numWhacksToWin - whacksCounter; 
+int whacksLeft = numWhacksToWin - whacksCounter; 
 
 
 int previousLedIndex = -1;
@@ -37,9 +37,13 @@ void loop() {
   
   // Check if the game is done
   if (whacksCounter >= numWhacksToWin) {
+    if (whacksCounter = numWhacksToWin) {
+      whacksCounter++;
+      Serial.print("Game over!");
+    }
     // Game is done, you can add additional logic here if needed
     
-    whacksCounter ++;
+    
     return;
   }
 
