@@ -8,8 +8,11 @@ const int pirPins[] = {5, 6, 7};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
-int whacksLeft = numWhacksToWin - whacksCounter; 
+int whacksLeft = 0;
 
+// Strings for LCD printing
+ 
+String whacksCounterString = String(whacksCounter);
 
 int previousLedIndex = -1;
 
@@ -28,21 +31,15 @@ void setup() {
 
   // Seed the random number generator with the current time
   randomSeed(millis());
-
+  if (lcd.begin()) lcd.print("Calibrating...");
   delay(10000);
-  Serial.print("Sensors Calibrated");
+  if (lcd.begin()) lcd.print("Done!");
 }
 
 void loop() {
-  
   // Check if the game is done
   if (whacksCounter >= numWhacksToWin) {
-    if (whacksCounter = numWhacksToWin) {
-      whacksCounter++;
-      Serial.print("Game over!");
-    }
     // Game is done, you can add additional logic here if needed
-    
     
     return;
   }
@@ -59,6 +56,11 @@ void loop() {
   Serial.print(randomLedIndex);
 
   // Turn off the LED
+  digitalWrite(ledPins[randomLedIndexPins[randomLedIndex]);
+
+  Serial.print(randomLedIndex);
+
+  // Turn off the LED
   digitalWrite(ledPins[randomLedIndex], LOW);
 
   // Update the previous LED index
@@ -66,14 +68,18 @@ void loop() {
 
   // Increment the whacks counter
   whacksCounter++;
-
-  lcd.setCursor(0, 1);
-  if (lcd.begin()) lcd.print(whacksCounter);
   
-  //whacksLeft = numWhacksToWin - whacksCounter; 
+  whacksLeft = numWhacksToWin - whacksCounter; 
+  
+  whacksCounterString = String(whacksCounter);
+  
+  lcd.setCursor(0, 1);
+  lcd.print(whacksCounterString);
+  
+  
   
   // Delay before the next roundlcd.setCursor(i, 1);
-  delay(1000);
+  delay(100);
 }
 
 int generateRandomLedIndex() {
