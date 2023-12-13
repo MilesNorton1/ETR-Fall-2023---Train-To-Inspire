@@ -8,7 +8,7 @@ const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
-int whacksLeft = 0;
+int whacksLeft = 0; // Counts how man whacks are left in the game
 
 // Strings for LCD printing
  
@@ -53,15 +53,9 @@ void loop() {
   // Wait for the player to "whack" the LED
   waitForWhack(pirPins[randomLedIndex]);
 
-  Serial.print(randomLedIndex);
-
-  // Turn off the LED
-  digitalWrite(ledPins[randomLedIndexPins[randomLedIndex]);
-
-  Serial.print(randomLedIndex);
-
   // Turn off the LED
   digitalWrite(ledPins[randomLedIndex], LOW);
+
 
   // Update the previous LED index
   previousLedIndex = randomLedIndex;
