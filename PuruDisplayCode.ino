@@ -1,6 +1,8 @@
-#include <LiquidCrystal.h>
+#include <Wire.h>
 
-LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+#include "LCDIC2.h"
+
+LCDIC2 lcd(0x27, 16, 2);
 const int button1Pin = A0;
 const int button2Pin = A1;
 const int button3Pin = A2;
@@ -23,7 +25,7 @@ void setup() {
   pinMode(button2Pin, INPUT_PULLUP);
   pinMode(button3Pin, INPUT_PULLUP);
   pinMode(button4Pin, INPUT_PULLUP);
-  lcd.begin(16, 2);
+  lcd.begin();
   lcd.print("    WELCOME!");
   delay(3000);
 }
@@ -53,26 +55,28 @@ void start(){
 
 void gameMode() {
     while(gameModeHolder == 0){
-        delay(200);
+    
         if(digitalRead(button3Pin) == LOW){
           gameModeHolder = 1;
+          delay(100);
         } else if (digitalRead(button4Pin) == LOW) {
-            if(gameModeI == 2){
-              delay(200);
+            if(gameModeI == 1){
               lcd.clear();
-              gameModeI = 0;
-              lcd.print("  Select Mode  ");
+              gameModeI = 1;
+              lcd.print("Select Mode  ");
               lcd.setCursor(0,1) ; //sets cursor to second line first row
               lcd.print(gameModeNames[gameModeI]);
+              lcd.print("        .");
             
             }
             else{
               delay(200);
               lcd.clear();
               gameModeI = gameModeI+1;
-              lcd.print("  Select Mode  ");
+              lcd.print("Select Mode  ");
               lcd.setCursor(0,1) ; //sets cursor to second line first row
               lcd.print(gameModeNames[gameModeI]);
+              lcd.print("        .");
             }
 
         } else if (digitalRead(button2Pin) == LOW) {
@@ -81,19 +85,22 @@ void gameMode() {
               delay(200);
               lcd.clear();
               gameModeI = gameModeI;
-              lcd.print("  Select Mode  ");
+              lcd.print("Select Mode  ");
               lcd.setCursor(0,1) ; //sets cursor to second line first row
               lcd.print(gameModeNames[gameModeI]);
+              lcd.print("      .");
             }
             else{
               delay(200);
               lcd.clear();
               gameModeI = gameModeI-1;
-              lcd.print("  Select Mode  ");
+              lcd.print("Select Mode  ");
               lcd.setCursor(0,1) ; //sets cursor to second line first row
               lcd.print(gameModeNames[gameModeI]);
+              lcd.print("        .");
             }
             lcd.print(gameModeNames[gameModeI]);
+            lcd.print("       .");
         }
 
     }
@@ -107,14 +114,14 @@ void timeTrial() {
   lcd.print(timeTrialNames[timeTrialI]);
   delay(500);
   while(digitalRead(button3Pin) == HIGH){
+    delay(100);
     if (digitalRead(button3Pin) == LOW){
       timeTrialHolder = timeTrialHolder + 1;
     }
     while (timeTrialHolder == 1) {
-      delay(200);
       if (timeTrialI == 3){
         lcd.clear();
-        customCounting();
+        customTimeTrial();
       }
     }
     if (digitalRead(button4Pin) == LOW) {
@@ -215,14 +222,13 @@ void counting() {
   lcd.print("  Select Settings  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
   lcd.print(countingNames[countingI]);
-  delay(200);
   while (digitalRead(button3Pin) == HIGH) {
+    delay(100);
     if (digitalRead(button3Pin) == LOW){
       countingHolder = countingHolder + 1;
     }
     while (countingHolder == 1) {
-      delay(200);
-      if (countingHolder == 3){
+      if (countingI == 3){
         lcd.clear();
         customCounting();
       }
@@ -269,7 +275,7 @@ void counting() {
 void customCounting() {
   lcd.clear(); 
   customCountingNamesI = customCountingNamesI;
-  lcd.print("  Select Num Goal  ");
+  lcd.print(" Select Num Goal  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
   lcd.print(customCountingNames[customCountingNamesI]);
   delay(200);
@@ -279,7 +285,7 @@ void customCounting() {
         delay(200);
         lcd.clear(); 
         customCountingNamesI = customCountingNamesI;
-        lcd.print("  Select Num Goal  ");
+        lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
         lcd.print(customCountingNames[customCountingNamesI]);
       }
@@ -287,7 +293,7 @@ void customCounting() {
         delay(200);
         lcd.clear();
         customCountingNamesI = customCountingNamesI+1;
-        lcd.print("  Select Num Goal  ");
+        lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
         lcd.print(customCountingNames[customCountingNamesI]);
       }
@@ -297,7 +303,7 @@ void customCounting() {
         delay(200);
         lcd.clear();
         customCountingNamesI = customCountingNamesI;
-        lcd.print("  Select Num Goal  ");
+        lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
         lcd.print(customCountingNames[customCountingNamesI]);
       }
@@ -305,7 +311,7 @@ void customCounting() {
         delay(200);
         lcd.clear();
         customCountingNamesI = customCountingNamesI-1;
-        lcd.print("  Select Num Goal  ");
+        lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
         lcd.print(customCountingNames[customCountingNamesI]);
       }
