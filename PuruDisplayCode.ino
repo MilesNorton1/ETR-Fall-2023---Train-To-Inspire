@@ -10,14 +10,14 @@ int timeTrialHolder = 0;
 int placeHolderHolder = 0;
 int gameModeI = 0;
 int timeTrialI = 0;
-int placeHolderI = 0;
+int countingI = 0;
 int customTimeTrialTimeI = 0;
-int customPlaceHolderNamesI = 0;
-char *gameModeNames[] = {"Time Trial", "Counting", "Placeholder"};
+int customCountingNamesI = 0;
+char *gameModeNames[] = {"Time Trial", "Counting"};
 char *timeTrialNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customTimeTrialTime[] = {"10", "20", "30", "40", "50", "60"};
-char *placeHolderNames[] = {"Easy", "Normal", "Hard", "Custom"};
-char *customPlaceHolderNames[] = {"10", "20", "30","40","50"};
+char *countingNames[] = {"Easy", "Normal", "Hard", "Custom"};
+char *customCountingNames[] = {"10", "20", "30","40","50"};
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
@@ -39,10 +39,6 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
-  } else if (gameModeI == 2){
-    lcd.clear();
-    placeHolder();
-  }
 }
 
 void start(){
@@ -157,51 +153,6 @@ void timeTrial() {
       }
     }
   }
-  /*
-  while (timeTrialHolder == 0) {
-    if (digitalRead(button3Pin) == LOW){
-      timeTrialHolder = 1;
-    }
-  
-    if (digitalRead(button4Pin) == LOW) {
-      if(timeTrialI == 3){
-        delay(200);
-        lcd.clear(); 
-        timeTrialI = timeTrialI;
-        lcd.print("  Select Settings  ");
-        lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(timeTrialNames[timeTrialI]);
-      }
-      else{
-        delay(200);
-        lcd.clear();
-        timeTrialI = timeTrialI+1;
-        lcd.print("  Select Settings  ");
-        lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(timeTrialNames[timeTrialI]);
-      }
-    }
-    if (digitalRead(button2Pin) == LOW) {
-      if(timeTrialI == 0){
-        delay(200);
-        lcd.clear();
-        timeTrialI = timeTrialI;
-        lcd.print("  Select Settings  ");
-        lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(timeTrialNames[timeTrialI]);
-      }
-      else{
-        delay(200);
-        lcd.clear();
-        timeTrialI = timeTrialI-1;
-        lcd.print("  Select Settings  ");
-        lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(timeTrialNames[timeTrialI]);
-      }
-    }
-    
-  }
-  */
   if (timeTrialHolder == 1) {
       if (timeTrialI == 3){
         delay(200);
@@ -256,111 +207,107 @@ void customTimeTrial() {
     }
   }
 }
-void placeHolder() {
+void counting() {
 
   lcd.clear(); 
-  placeHolderI = placeHolderI;
+  countingI = countingI;
   lcd.print("  Select Settings  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
-  lcd.print(placeHolderNames[placeHolderI]);
+  lcd.print(countingNames[countingI]);
   delay(200);
   while (digitalRead(button3Pin) == HIGH) {
     if (digitalRead(button3Pin) == LOW){
-      placeHolderHolder = placeHolderHolder + 1;
+      countingHolder = countingHolder + 1;
     }
-    while (placeHolderHolder == 1) {
+    while (countingHolder == 1) {
       delay(200);
-      if (placeHolderI == 3){
+      if (countingHolderI == 3){
         lcd.clear();
-        customPlaceHolder();
+        customCounting();
       }
     }
   
     if (digitalRead(button4Pin) == LOW) {
-      if(placeHolderI == 3){
+      if(countingI == 3){
         delay(200);
         lcd.clear(); 
-        placeHolderI = placeHolderI;
+        countingI = countingI;
         lcd.print("  Select Settings  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(placeHolderNames[placeHolderI]);
+        lcd.print(countingNames[countingI]);
       }
       else{
         delay(200);
         lcd.clear();
-        placeHolderI = placeHolderI+1;
+        countingI = countingI+1;
         lcd.print("  Select Settings  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(placeHolderNames[placeHolderI]);
+        lcd.print(countingNames[countingI]);
       }
     }
     if (digitalRead(button2Pin) == LOW) {
-      if(placeHolderI == 0){
+      if(countingI == 0){
         delay(200);
         lcd.clear();
-        placeHolderI = placeHolderI;
+        countingI = countingI;
         lcd.print("  Select Settings  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(placeHolderNames[placeHolderI]);
+        lcd.print(countingNames[countingI]);
       }
       else{
         delay(200);
         lcd.clear();
-        placeHolderI = placeHolderI-1;
+        countingI = countingI-1;
         lcd.print("  Select Settings  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(placeHolderNames[placeHolderI]);
+        lcd.print(countingNames[countingI]);
       }
     }
   }
 }
-void customPlaceHolder() {
+void customCounting() {
   lcd.clear(); 
-  customPlaceHolderNamesI = customPlaceHolderNamesI;
+  customCountingNamesI = customCountingNamesI;
   lcd.print("  Select Num Goal  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
-  lcd.print(customPlaceHolderNames[customPlaceHolderNamesI]);
+  lcd.print(customCountingNames[customCountingNamesI]);
   delay(200);
   while (digitalRead(button3Pin) == HIGH) {
     if (digitalRead(button4Pin) == LOW) {
-      if(customPlaceHolderNamesI == 4){
+      if(customCountingNamesI == 4){
         delay(200);
         lcd.clear(); 
-        customPlaceHolderNamesI = customPlaceHolderNamesI;
+        customCountingNamesI = customCountingNamesI;
         lcd.print("  Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customPlaceHolderNames[customPlaceHolderNamesI]);
+        lcd.print(customCountingNames[customCountingNamesI]);
       }
       else{
         delay(200);
         lcd.clear();
-        customPlaceHolderNamesI = customPlaceHolderNamesI+1;
+        customCountingNamesI = customCountingNamesI+1;
         lcd.print("  Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customPlaceHolderNames[customPlaceHolderNamesI]);
+        lcd.print(customCountingNames[customCountingNamesI]);
       }
     }
     if (digitalRead(button2Pin) == LOW) {
-      if(customPlaceHolderNamesI == 0){
+      if(customCountingNamesI == 0){
         delay(200);
         lcd.clear();
-        customPlaceHolderNamesI = customPlaceHolderNamesI;
+        customCountingNamesI = customCountingNamesI;
         lcd.print("  Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customPlaceHolderNames[customPlaceHolderNamesI]);
+        lcd.print(customCountingNames[customCountingNamesI]);
       }
       else{
         delay(200);
         lcd.clear();
-        customPlaceHolderNamesI = customPlaceHolderNamesI-1;
+        customCountingNamesI = customCountingNamesI-1;
         lcd.print("  Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customPlaceHolderNames[customPlaceHolderNamesI]);
+        lcd.print(customCountingNames[customCountingNamesI]);
       }
     }
   }
-}
-void counting() {
-  lcd.clear();
-  lcd.print("start");
 }
