@@ -39,6 +39,7 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
+  }
 }
 
 void start(){
@@ -113,7 +114,7 @@ void timeTrial() {
       delay(200);
       if (timeTrialI == 3){
         lcd.clear();
-        customPlaceHolder();
+        customCounting();
       }
     }
     if (digitalRead(button4Pin) == LOW) {
@@ -221,7 +222,7 @@ void counting() {
     }
     while (countingHolder == 1) {
       delay(200);
-      if (countingHolderI == 3){
+      if (countingHolder == 3){
         lcd.clear();
         customCounting();
       }
