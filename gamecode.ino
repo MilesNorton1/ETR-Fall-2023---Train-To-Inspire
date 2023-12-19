@@ -3,15 +3,15 @@
 LCDIC2 lcd(0x27, 16, 2);
 
 const int numLeds = 8;
-const int ledPins[] = {22, 23, 24, 25, 26, 27, 30, 31};
-const int pirPins[] = {32, 33, 34, 35, 36, 37, 40, 41};
+const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
-int whacksLeft = 0; // Counts how man whacks are left in the game
-int savedTimeValue = 0;
-int finalTime = 0;
-int finalTimeCalc = 0;
+int whacksLeft = 0; // Counts how many whacks are left in the game
+int savedTimeValue = 0; // Saves time at the beginning of the games
+int finalTime = 0; // Time at the end of the game
+int finalTimeCalc = 0; // 
 int finalTime1 = 0;
 
 // Strings for LCD printing
@@ -27,33 +27,17 @@ void setup() {
   for (int i = 0; i < numLeds; i++) {
     pinMode(ledPins[i], OUTPUT);
   }
-  pinMode(29, OUTPUT);
-  pinMode(28, OUTPUT);
   // Initialize PIR sensor pins as inputs
   for (int i = 0; i < numLeds; i++) {
     pinMode(pirPins[i], INPUT);
   }
 
-    pinMode(11, OUTPUT);
+    pinMode(11, OUTPUT); // initalize speaker
 
   // Seed the random number generator with the current time
   randomSeed(millis());
   if (lcd.begin()) lcd.print("Getting ready");
-  delay(2000);
-  allOn();
-  beep();
-  delay(500);
-  allOff();
-  delay(500);
-  allOn();
-  beep();
-  delay(500);
-  allOff();
-  delay(500);
-  allOn();
-  beep();
-  delay(500);
-  allOff();
+  
 
   savedTimeValue = millis() / 1000;
   Serial.print(savedTimeValue);
@@ -69,8 +53,9 @@ void loop() {
       finalTime = millis() / 1000;
 
 
-      finalTimeCalc = finalTime - savedTimeValue;
-      finalTimeString = String(finalTimeCalc);
+      //finalTimeCalc = finalTime - savedTimeValue;
+      
+      finalTimeString = String(finalTime - savedTimeValue);
 
 
       Serial.print(finalTimeCalc);
@@ -140,19 +125,35 @@ void waitForWhack(int pirPin) {
   // You can add additional logic or actions after the PIR sensor is triggered
 }
 
+void startupSequence(){
+  delay(2000);
+  
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+  delay(500);
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+  delay(500);
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+}
+
+
 void allOn(){
   for (int i = 0; i < numLeds; i++) {
-    digitalWrite(ledPins[i], HIGH);
-    digitalWrite(29, HIGH);
-    digitalWrite(28, HIGH);
+    digitalWrite(ledPins[i], HIGH); 
   }
 }
 
 void allOff(){
   for (int i = 0; i < numLeds; i++) {
     digitalWrite(ledPins[i], LOW);
-    digitalWrite(29, LOW);
-    digitalWrite(28, LOW);
   }
 }
 
