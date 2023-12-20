@@ -359,3 +359,68 @@ void countingGo(){
   savedTimeValue = millis() / 1000;
   Serial.print(savedTimeValue);
 }
+
+void countingStart() {
+    // Check if the game is done
+  if (whacksCounter >= numWhacksToWin) {
+    // Game is done, you can add additional logic here if needed
+    if (whacksCounter == numWhacksToWin) {
+
+      Serial.print(millis());
+      finalTime = millis() / 1000;
+
+
+      //finalTimeCalc = finalTime - savedTimeValue;
+      
+      finalTimeString = String(finalTime - savedTimeValue);
+
+
+      Serial.print(finalTimeCalc);
+      lcd.setCursor (0, 0);
+      lcd.print("Your time is");
+      lcd.setCursor (0, 1);
+      lcd.print(finalTimeString);
+
+      for (int i = 0; i < 3; i++) {
+    beep();
+    delay(200);
+  }
+      whacksCounter++;
+    } else {
+      return;
+    }
+    return;
+  }
+  whacksLeft = numWhacksToWin - whacksCounter;
+  whacksCounterString = String(whacksLeft);
+  lcd.begin();
+  lcd.setCursor(0, 0);
+  lcd.print("Lights Left:");
+  lcd.setCursor(0, 1);
+  lcd.print(whacksCounterString);
+
+  // Generate a random LED index different from the previous one
+  int randomLedIndex = generateRandomLedIndex();
+
+  // Light up the random LED
+  digitalWrite(ledPins[randomLedIndex], HIGH);
+  delay(750);
+  // Wait for the player to "whack" the LED
+  waitForWhack(pirPins[randomLedIndex]);
+
+  // Turn off the LED
+  digitalWrite(ledPins[randomLedIndex], LOW);
+
+
+  // Update the previous LED index
+  previousLedIndex = randomLedIndex;
+
+  // Increment the whacks counter
+  whacksCounter++;
+  
+  beep();
+
+  // Delay before the next round
+  delay(100);
+
+}
