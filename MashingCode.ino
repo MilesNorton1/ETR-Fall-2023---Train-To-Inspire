@@ -59,6 +59,10 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
+    if(countingNames == 0){
+      countingGo();
+      countingStart();
+    }
   }
 }
 
@@ -423,4 +427,59 @@ void countingStart() {
   // Delay before the next round
   delay(100);
 
+}
+int generateRandomLedIndex() {
+  int randomIndex;
+  do {
+    randomIndex = random(0, numLeds);
+  } while (randomIndex == previousLedIndex);
+
+  return randomIndex;
+}
+
+void waitForWhack(int pirPin) {
+  // Wait for the PIR sensor to be triggered
+  while (digitalRead(pirPin) == LOW) {
+    // You can add additional logic or actions while waiting if needed
+  }
+  
+  // You can add additional logic or actions after the PIR sensor is triggered
+}
+
+void startupSequence(){
+  delay(2000);
+  
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+  delay(500);
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+  delay(500);
+  allOn();
+  beep();
+  delay(500);
+  allOff();
+}
+
+
+void allOn(){
+  for (int i = 0; i < numLeds; i++) {
+    digitalWrite(ledPins[i], HIGH); 
+  }
+}
+
+void allOff(){
+  for (int i = 0; i < numLeds; i++) {
+    digitalWrite(ledPins[i], LOW);
+  }
+}
+
+void beep(){
+  digitalWrite(11, HIGH);
+  delay(100);
+  digitalWrite(11, LOW);
 }
