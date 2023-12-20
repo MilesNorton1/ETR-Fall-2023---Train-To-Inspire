@@ -376,9 +376,9 @@ void countingGo() {
   
   // Delay before the next roundlcd.setCursor(i, 1);
   delay(100);
-  }
+ }
 
-  int generateRandomLedIndex() {
+int generateRandomLedIndex() {
   int randomIndex;
   do {
     randomIndex = random(0, numLeds);
