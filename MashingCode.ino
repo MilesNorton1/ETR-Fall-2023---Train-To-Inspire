@@ -397,7 +397,6 @@ void countingStart() {
   }
   whacksLeft = numWhacksToWin - whacksCounter;
   whacksCounterString = String(whacksLeft);
-  lcd.begin();
   lcd.setCursor(0, 0);
   lcd.print("Lights Left:");
   lcd.setCursor(0, 1);
