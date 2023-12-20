@@ -332,3 +332,57 @@ void customCounting() {
     }
   }
 }
+void countingGo() {
+  // Check if the game is done
+  if (whacksCounter >= numWhacksToWin) {
+    // Game is done, you can add additional logic here if needed
+    
+    return;
+  }
+
+  // Generate a random LED index different from the previous one
+  int randomLedIndex = generateRandomLedIndex();
+
+  // Light up the random LED
+  digitalWrite(ledPins[randomLedIndex], HIGH);
+  delay(1000);
+  // Wait for the player to "whack" the LED
+  waitForWhack(pirPins[randomLedIndex]);
+
+  Serial.print(randomLedIndex);
+
+  // Turn off the LED
+  digitalWrite(ledPins[randomLedIndexPins[randomLedIndex]);
+
+  Serial.print(randomLedIndex);
+
+  // Turn off the LED
+  digitalWrite(ledPins[randomLedIndex], LOW);
+
+  // Update the previous LED index
+  previousLedIndex = randomLedIndex;
+
+  // Increment the whacks counter
+  whacksCounter++;
+  
+  whacksLeft = numWhacksToWin - whacksCounter; 
+  
+  whacksCounterString = String(whacksCounter);
+  
+  lcd.setCursor(0, 1);
+  lcd.print(whacksCounterString);
+  
+  
+  
+  // Delay before the next roundlcd.setCursor(i, 1);
+  delay(100);
+  }
+
+  int generateRandomLedIndex() {
+  int randomIndex;
+  do {
+    randomIndex = random(0, numLeds);
+  } while (randomIndex == previousLedIndex);
+
+  return randomIndex;
+}
