@@ -59,10 +59,6 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
-    if(countingNames == 0){
-      countingGo();
-      countingStart();
-    }
   }
 }
 
@@ -253,6 +249,10 @@ void counting() {
       if (countingI == 3){
         lcd.clear();
         customCounting();
+      } else if (countingI == 0){
+        lcd.clear();
+        countingGo();
+        countingStart();
       }
     }
   
@@ -343,6 +343,7 @@ void customCounting() {
 
 void countingGo(){
   lcd.begin();
+  lcd.print("ready");
   Serial.begin(9600);
   // Initialize LED pins as outputs
   for (int i = 0; i < numLeds; i++) {
