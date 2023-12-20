@@ -20,6 +20,24 @@ char *timeTrialNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customTimeTrialTime[] = {"10", "20", "30", "40", "50", "60"};
 char *countingNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customCountingNames[] = {"10", "20", "30","40","50"};
+const int numLeds = 8;
+const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
+
+int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
+int whacksCounter = 0;   // Counter to keep track of whacks
+int whacksLeft = 0; // Counts how many whacks are left in the game
+int savedTimeValue = 0; // Saves time at the beginning of the games
+int finalTime = 0; // Time at the end of the game
+int finalTimeCalc = 0; // 
+int finalTime1 = 0;
+
+// Strings for LCD printing
+String finalTimeString = String(millis());
+String whacksCounterString = String(whacksCounter);
+
+int previousLedIndex = -1;
+
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
