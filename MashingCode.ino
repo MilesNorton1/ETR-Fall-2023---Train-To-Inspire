@@ -55,7 +55,13 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
+    if (countingNames == 0){
+     lcd.clear();
+     customCounting();
+     countingGo();
+    }
   }
+
 }
 
 void start(){
@@ -385,4 +391,12 @@ int generateRandomLedIndex() {
   } while (randomIndex == previousLedIndex);
 
   return randomIndex;
+}
+void waitForWhack(int pirPin) {
+  // Wait for the PIR sensor to be triggered
+  while (digitalRead(pirPin) == LOW) {
+    // You can add additional logic or actions while waiting if needed
+  }
+  
+  // You can add additional logic or actions after the PIR sensor is triggered
 }
