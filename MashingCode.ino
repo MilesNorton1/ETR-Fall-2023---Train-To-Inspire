@@ -20,20 +20,6 @@ char *timeTrialNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customTimeTrialTime[] = {"10", "20", "30", "40", "50", "60"};
 char *countingNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customCountingNames[] = {"10", "20", "30","40","50"};
-const int numLeds = 3;
-const int ledPins[] = {2, 3, 4};
-const int pirPins[] = {5, 6, 7};
-
-int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
-int whacksCounter = 0;   // Counter to keep track of whacks
-int whacksLeft = 0;
-
-// Strings for LCD printing
- 
-String whacksCounterString = String(whacksCounter);
-
-int previousLedIndex = -1;
-
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
@@ -55,13 +41,7 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
-    if (countingNames == 0){
-     lcd.clear();
-     customCounting();
-     countingGo();
-    }
   }
-
 }
 
 void start(){
@@ -337,66 +317,4 @@ void customCounting() {
       }
     }
   }
-}
-void countingGo() {
-  // Check if the game is done
-  if (whacksCounter >= numWhacksToWin) {
-    // Game is done, you can add additional logic here if needed
-    
-    return;
-  }
-
-  // Generate a random LED index different from the previous one
-  int randomLedIndex = generateRandomLedIndex();
-
-  // Light up the random LED
-  digitalWrite(ledPins[randomLedIndex], HIGH);
-  delay(1000);
-  // Wait for the player to "whack" the LED
-  waitForWhack(pirPins[randomLedIndex]);
-
-  Serial.print(randomLedIndex);
-
-  // Turn off the LED
-  digitalWrite(ledPins[randomLedIndexPins[randomLedIndex]);
-
-  Serial.print(randomLedIndex);
-
-  // Turn off the LED
-  digitalWrite(ledPins[randomLedIndex], LOW);
-
-  // Update the previous LED index
-  previousLedIndex = randomLedIndex;
-
-  // Increment the whacks counter
-  whacksCounter++;
-  
-  whacksLeft = numWhacksToWin - whacksCounter; 
-  
-  whacksCounterString = String(whacksCounter);
-  
-  lcd.setCursor(0, 1);
-  lcd.print(whacksCounterString);
-  
-  
-  
-  // Delay before the next roundlcd.setCursor(i, 1);
-  delay(100);
- }
-
-int generateRandomLedIndex() {
-  int randomIndex;
-  do {
-    randomIndex = random(0, numLeds);
-  } while (randomIndex == previousLedIndex);
-
-  return randomIndex;
-}
-void waitForWhack(int pirPin) {
-  // Wait for the PIR sensor to be triggered
-  while (digitalRead(pirPin) == LOW) {
-    // You can add additional logic or actions while waiting if needed
-  }
-  
-  // You can add additional logic or actions after the PIR sensor is triggered
 }
