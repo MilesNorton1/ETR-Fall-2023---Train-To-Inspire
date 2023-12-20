@@ -336,3 +336,26 @@ void customCounting() {
     }
   }
 }
+
+void countingGo(){
+  lcd.begin();
+  Serial.begin(9600);
+  // Initialize LED pins as outputs
+  for (int i = 0; i < numLeds; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
+  // Initialize PIR sensor pins as inputs
+  for (int i = 0; i < numLeds; i++) {
+    pinMode(pirPins[i], INPUT);
+  }
+
+    pinMode(11, OUTPUT); // initalize speaker
+
+  // Seed the random number generator with the current time
+  randomSeed(millis());
+  if (lcd.begin()) lcd.print("Getting ready");
+  
+
+  savedTimeValue = millis() / 1000;
+  Serial.print(savedTimeValue);
+}
