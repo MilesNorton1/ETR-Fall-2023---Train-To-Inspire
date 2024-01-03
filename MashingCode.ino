@@ -19,7 +19,8 @@ char *gameModeNames[] = {"Time Trial", "Counting"};
 char *timeTrialNames[] = {"Easy", "Normal", "Hard", "Custom"};
 char *customTimeTrialTime[] = {"10", "20", "30", "40", "50", "60"};
 char *countingNames[] = {"Easy", "Normal", "Hard", "Custom"};
-char *customCountingNames[] = {"10", "20", "30","40","50"};
+int customCountingNames[] = {10, 20, 30, 40, 50};
+
 const int numLeds = 8;
 const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
@@ -59,6 +60,10 @@ void loop() {
   } else if(gameModeI == 1){
     lcd.clear();
     counting();
+    numWhacksToWin = customCountingNames[customCountingNamesI] ;
+    lcd.clear();
+    countingGo();
+    countingStart();
   }
 }
 
@@ -233,6 +238,8 @@ void customTimeTrial() {
     }
   }
 }
+
+/*
 void counting() {
 
   lcd.clear(); 
@@ -294,14 +301,15 @@ void counting() {
     }
   }
 }
-void customCounting() {
+*/
+void counting() {
   lcd.clear(); 
   customCountingNamesI = customCountingNamesI;
   lcd.print(" Select Num Goal  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
-  lcd.print(customCountingNames[customCountingNamesI]);
+  lcd.print(String(customCountingNames[customCountingNamesI]));
   delay(200);
-  while (digitalRead(button3Pin) == HIGH) {
+  while (countingHolder == 0) {
     if (digitalRead(button4Pin) == LOW) {
       if(customCountingNamesI == 4){
         delay(200);
@@ -309,7 +317,7 @@ void customCounting() {
         customCountingNamesI = customCountingNamesI;
         lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customCountingNames[customCountingNamesI]);
+        lcd.print(String(customCountingNames[customCountingNamesI]));
       }
       else{
         delay(200);
@@ -317,7 +325,7 @@ void customCounting() {
         customCountingNamesI = customCountingNamesI+1;
         lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customCountingNames[customCountingNamesI]);
+        lcd.print(String(customCountingNames[customCountingNamesI]));
       }
     }
     if (digitalRead(button2Pin) == LOW) {
@@ -327,7 +335,7 @@ void customCounting() {
         customCountingNamesI = customCountingNamesI;
         lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customCountingNames[customCountingNamesI]);
+        lcd.print(String(customCountingNames[customCountingNamesI]));
       }
       else{
         delay(200);
@@ -335,14 +343,18 @@ void customCounting() {
         customCountingNamesI = customCountingNamesI-1;
         lcd.print(" Select Num Goal  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customCountingNames[customCountingNamesI]);
+        lcd.print(String(customCountingNames[customCountingNamesI]));
       }
+    }
+    if(digitalRead(button3Pin) == LOW){
+      countingHolder = 1;
     }
   }
 }
 
 void countingGo(){
   lcd.begin();
+  lcd.clear();
   lcd.print("ready");
   Serial.begin(9600);
   // Initialize LED pins as outputs
@@ -399,7 +411,7 @@ void countingStart() {
   whacksLeft = numWhacksToWin - whacksCounter;
   whacksCounterString = String(whacksLeft);
   lcd.setCursor(0, 0);
-  lcd.print("Lights Left:");
+  lcd.print("Lights Left:        ");
   lcd.setCursor(0, 1);
   lcd.print(whacksCounterString);
 
