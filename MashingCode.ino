@@ -10,6 +10,7 @@ const int button4Pin = A3;
 int gameModeHolder = 0;
 int timeTrialHolder = 0;
 int countingHolder = 0;
+int countingHolder2 = 0;
 int gameModeI = 0;
 int timeTrialI = 0;
 int countingI = 0;
@@ -58,11 +59,15 @@ void loop() {
     lcd.clear();
     timeTrial();
   } else if(gameModeI == 1){
+    if(countingHolder2 == 0){
+      lcd.clear();
+      counting();
+      numWhacksToWin = customCountingNames[customCountingNamesI] ;
+      lcd.clear();
+      countingGo();
+      countingHolder2 = 1;
+    }
     lcd.clear();
-    counting();
-    numWhacksToWin = customCountingNames[customCountingNamesI] ;
-    lcd.clear();
-    countingGo();
     countingStart();
   }
 }
