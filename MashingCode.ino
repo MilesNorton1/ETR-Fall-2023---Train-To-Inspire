@@ -1,3 +1,5 @@
+
+
 #include <Wire.h>
 
 #include "LCDIC2.h"
@@ -9,6 +11,7 @@ const int button3Pin = A2;
 const int button4Pin = A3;
 int gameModeHolder = 0;
 int timeTrialHolder = 0;
+int timeTrialHolder2 = 0;
 int countingHolder = 0;
 int countingHolder2 = 0;
 int gameModeI = 0;
@@ -18,11 +21,11 @@ int customTimeTrialTimeI = 0;
 int customCountingNamesI = 0;
 char *gameModeNames[] = {"Time Trial", "Counting"};
 char *timeTrialNames[] = {"Easy", "Normal", "Hard", "Custom"};
-char *customTimeTrialTime[] = {"10", "20", "30", "40", "50", "60"};
+int customTimeTrialTime[] = {10, 20, 30, 40, 50, 60};
 char *countingNames[] = {"Easy", "Normal", "Hard", "Custom"};
-int customCountingNames[] = {10, 20, 30, 40, 50};
+int customCountingNames[] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
-const int numLeds = 8;
+const int numLeds = 10;
 const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
 
@@ -33,12 +36,14 @@ int savedTimeValue = 0; // Saves time at the beginning of the games
 int finalTime = 0; // Time at the end of the game
 int finalTimeCalc = 0; // 
 int finalTime1 = 0;
+int timeLimitSeconds = 60;  // Set the time limit for the game in seconds
 
 // Strings for LCD printing
 String finalTimeString = String(millis());
 String whacksCounterString = String(whacksCounter);
 
 int previousLedIndex = -1;
+unsigned long lastUpdateTime = 0;
 
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
@@ -54,22 +59,29 @@ void loop() {
   start();
   gameMode();
   lcd.clear();
+  lcd.print("Hello");
   if (gameModeI == 0){
-    lcd.clear();
-    timeTrial();
-  } else if(gameModeI == 1){
-    if(countingHolder2 == 0){
+    if(timeTrialHolder2 == 0){
       lcd.clear();
-      counting();
-      numWhacksToWin = customCountingNames[customCountingNamesI] ;
+      timeTrial();
+      timeLimitSeconds = customTimeTrialTime[customTimeTrialTimeI];
       lcd.clear();
-      countingGo();
-      countingHolder2 = 1;
+      timeTrialGo();
+      timeTrialHolder2 = 1;
     }
     lcd.clear();
-    countingStart();
-  } else if(gameModeI == 3){
-    lcd.print("restelay(10000);arting");
+    timeTrialStart();
+  } else if(gameModeI == 1){
+      if(countingHolder2 == 0){
+        lcd.clear();
+        counting();
+        numWhacksToWin = customCountingNames[customCountingNamesI] ;
+        lcd.clear();
+        countingGo();
+        countingHolder2 = 1;
+      }
+      lcd.clear();
+      countingStart();
   }
 }
 
@@ -134,7 +146,7 @@ void gameMode() {
 
     }
   }
-
+/*
 void timeTrial() {
   lcd.clear(); 
   timeTrialI = timeTrialI;
@@ -198,14 +210,15 @@ void timeTrial() {
       }
     }
 }
-void customTimeTrial() {
+*/
+void timeTrial() {
   lcd.clear(); 
   timeTrialI = timeTrialI;
   lcd.print("  Select Time  ");
   lcd.setCursor(0,1) ; //sets cursor to second line first row
-  lcd.print(customTimeTrialTime[customTimeTrialTimeI]);
+  lcd.print(String(customTimeTrialTime[customTimeTrialTimeI]));
   delay(200);
-  while (digitalRead(button3Pin) == HIGH) {
+  while (timeTrialHolder == 0) {
     if (digitalRead(button4Pin) == LOW) {
       if(customTimeTrialTimeI == 5){
         delay(200);
@@ -213,7 +226,7 @@ void customTimeTrial() {
         customTimeTrialTimeI = customTimeTrialTimeI;
         lcd.print("  Select Time  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customTimeTrialTime[customTimeTrialTimeI]);
+        lcd.print(String(customTimeTrialTime[customTimeTrialTimeI]));
       }
       else{
         delay(200);
@@ -221,7 +234,7 @@ void customTimeTrial() {
         customTimeTrialTimeI = customTimeTrialTimeI+1;
         lcd.print("  Select Time  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customTimeTrialTime[customTimeTrialTimeI]);
+        lcd.print(String(customTimeTrialTime[customTimeTrialTimeI]));
       }
     }
     if (digitalRead(button2Pin) == LOW) {
@@ -231,7 +244,7 @@ void customTimeTrial() {
         customTimeTrialTimeI = customTimeTrialTimeI;
         lcd.print("  Select Time  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customTimeTrialTime[customTimeTrialTimeI]);
+        lcd.print(String(customTimeTrialTime[customTimeTrialTimeI]));
       }
       else{
         delay(200);
@@ -239,8 +252,11 @@ void customTimeTrial() {
         customTimeTrialTimeI = customTimeTrialTimeI-1;
         lcd.print("  Select Time  ");
         lcd.setCursor(0,1) ; //sets cursor to second line first row
-        lcd.print(customTimeTrialTime[customTimeTrialTimeI]);
+        lcd.print(String(customTimeTrialTime[customTimeTrialTimeI]));
       }
+    }
+    if(digitalRead(button3Pin) == LOW){
+      timeTrialHolder = 1;
     }
   }
 }
@@ -317,7 +333,7 @@ void counting() {
   delay(200);
   while (countingHolder == 0) {
     if (digitalRead(button4Pin) == LOW) {
-      if(customCountingNamesI == 4){
+      if(customCountingNamesI == 9){
         delay(200);
         lcd.clear(); 
         customCountingNamesI = customCountingNamesI;
@@ -381,6 +397,11 @@ void countingGo(){
 
   savedTimeValue = millis() / 1000;
   Serial.print(savedTimeValue);
+
+  startupSequence();
+
+  savedTimeValue = millis();
+
 }
 
 void countingStart() {
@@ -391,27 +412,24 @@ void countingStart() {
 
       Serial.print(millis());
       finalTime = millis() / 1000;
-
-
-      //finalTimeCalc = finalTime - savedTimeValue;
-      
-      finalTimeString = String(finalTime - savedTimeValue);
+  
 
 
       Serial.print(finalTimeCalc);
       lcd.setCursor (0, 0);
       lcd.print("Your time is");
       lcd.setCursor (0, 1);
-      lcd.print(finalTimeString);
-      gameModeI = 3;
+      lcd.print(String(finalTime - savedTimeValue));
 
       for (int i = 0; i < 3; i++) {
-    beep();
-    delay(10000);
-    whacksCounter = 0;
-    gameModeI = 1;
-  }
-      whacksCounter++;
+        beep();
+        delay(200);
+      }
+
+      delay(10000);
+      whacksCounter = 0;
+      gameModeI = 1;
+
     } else {
       return;
     }
@@ -449,10 +467,103 @@ void countingStart() {
   delay(100);
 
 }
+
+void timeTrialGo(){
+  lcd.begin();
+  Serial.begin(9600);
+
+  // Initialize LED pins as outputs
+  for (int i = 0; i < numLeds; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
+
+  // Initialize PIR sensor pins as inputs
+  for (int i = 0; i < numLeds; i++) {
+    pinMode(pirPins[i], INPUT);
+  }
+
+  pinMode(11, OUTPUT); // initialize speaker
+
+  // Seed the random number generator with the current time
+  randomSeed(millis());
+  if (lcd.begin()) lcd.print("Getting ready");
+
+  savedTimeValue = millis() / 1000;
+  Serial.print(savedTimeValue);
+  lastUpdateTime = millis();
+  whacksLeft = timeLimitSeconds - (millis() / 1000 - savedTimeValue);
+  lcd.setCursor(0, 1);
+  lcd.print(String(whacksLeft));
+  lcd.setCursor(0, 0);
+  lcd.print("Time Left:");
+
+}
+void timeTrialStart(){
+// Check if the game is done
+  if (millis() / 1000 - savedTimeValue >= timeLimitSeconds) {
+    // Game is done, you can add additional logic here if needed
+    if (whacksCounter > 0) {
+      Serial.print(millis());
+      finalTime = millis() / 1000;
+
+      finalTimeString = String(finalTime - savedTimeValue);
+
+      Serial.print(finalTime);
+      lcd.setCursor(0, 0);
+      lcd.print("Lights Hit:");
+      lcd.setCursor(0, 1);
+      lcd.print(String(whacksCounter));
+
+      for (int i = 0; i < 3; i++) {
+        beep();
+        delay(200);
+      }
+      delay(10000);
+      gameModeI = 3;
+      while (true) {
+        // Game over, you can add additional logic or actions here
+      }
+    }
+  }
+
+
+  whacksLeft = timeLimitSeconds - (millis() / 1000 - savedTimeValue);
+  lcd.setCursor(0, 0);
+  lcd.print("Time Left:");
+  lcd.setCursor(0, 1);
+  lcd.print(String(whacksLeft));
+
+  // Generate a random LED index different from the previous one
+  int randomLedIndex = generateRandomLedIndex();
+
+  // Light up the random LED
+  digitalWrite(ledPins[randomLedIndex], HIGH);
+
+  delay(750);
+
+  // Wait for the player to "whack" the LED
+  waitForWhack(pirPins[randomLedIndex]);
+
+  // Turn off the LED
+  digitalWrite(ledPins[randomLedIndex], LOW);
+
+  // Update the previous LED index
+  previousLedIndex = randomLedIndex;
+
+  // Increment the whacks counter
+  whacksCounter++;
+
+  beep();
+
+  // Delay before the next round
+  delay(100);
+
+}
+
 int generateRandomLedIndex() {
   int randomIndex;
   do {
-    randomIndex = random(0, numLeds);
+    randomIndex = random(0, 10);
   } while (randomIndex == previousLedIndex);
 
   return randomIndex;
@@ -461,15 +572,14 @@ int generateRandomLedIndex() {
 void waitForWhack(int pirPin) {
   // Wait for the PIR sensor to be triggered
   while (digitalRead(pirPin) == LOW) {
-    // You can add additional logic or actions while waiting if needed
   }
-  
+
   // You can add additional logic or actions after the PIR sensor is triggered
 }
 
-void startupSequence(){
+void startupSequence() {
   delay(2000);
-  
+
   allOn();
   beep();
   delay(500);
@@ -486,21 +596,21 @@ void startupSequence(){
   allOff();
 }
 
-
-void allOn(){
+void allOn() {
   for (int i = 0; i < numLeds; i++) {
-    digitalWrite(ledPins[i], HIGH); 
+    digitalWrite(ledPins[i], HIGH);
   }
 }
 
-void allOff(){
+void allOff() {
   for (int i = 0; i < numLeds; i++) {
     digitalWrite(ledPins[i], LOW);
   }
 }
 
-void beep(){
+void beep() {
   digitalWrite(11, HIGH);
   delay(100);
   digitalWrite(11, LOW);
 }
+
