@@ -54,7 +54,6 @@ void loop() {
   start();
   gameMode();
   lcd.clear();
-  lcd.print("Hello");
   if (gameModeI == 0){
     lcd.clear();
     timeTrial();
@@ -69,6 +68,8 @@ void loop() {
     }
     lcd.clear();
     countingStart();
+  } else if(gameModeI == 3){
+    lcd.print("restelay(10000);arting");
   }
 }
 
@@ -402,10 +403,13 @@ void countingStart() {
       lcd.print("Your time is");
       lcd.setCursor (0, 1);
       lcd.print(finalTimeString);
+      gameModeI = 3;
 
       for (int i = 0; i < 3; i++) {
     beep();
-    delay(200);
+    delay(10000);
+    whacksCounter = 0;
+    gameModeI = 1;
   }
       whacksCounter++;
     } else {
