@@ -5,10 +5,10 @@
 #include "LCDIC2.h"
 
 LCDIC2 lcd(0x27, 16, 2);
-const int button1Pin = A0;
-const int button2Pin = A1;
-const int button3Pin = A2;
-const int button4Pin = A3;
+const int button1Pin = A12;
+const int button2Pin = A7;
+const int button3Pin = A13;
+const int button4Pin = A11;
 int gameModeHolder = 0;
 int timeTrialHolder = 0;
 int timeTrialHolder2 = 0;
@@ -27,7 +27,7 @@ int customCountingNames[] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
 const int numLeds = 10;
 const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
+const int pirPins[] = {32, 33, 34, 35, 36, 37, 50, 39, 40, 41};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
@@ -46,7 +46,7 @@ int previousLedIndex = -1;
 unsigned long lastUpdateTime = 0;
 
 void setup() {
-  pinMode(button1Pin, INPUT_PULLUP);
+  //pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
   pinMode(button3Pin, INPUT_PULLUP);
   pinMode(button4Pin, INPUT_PULLUP);
@@ -520,6 +520,7 @@ void timeTrialStart(){
       }
       delay(10000);
       gameModeI = 3;
+      timeTrialGo();
       while (true) {
         // Game over, you can add additional logic or actions here
       }
@@ -563,7 +564,7 @@ void timeTrialStart(){
 int generateRandomLedIndex() {
   int randomIndex;
   do {
-    randomIndex = random(0, 10);
+    randomIndex = random(0, numLeds);
   } while (randomIndex == previousLedIndex);
 
   return randomIndex;
