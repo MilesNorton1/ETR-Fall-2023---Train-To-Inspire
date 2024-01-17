@@ -1,3 +1,7 @@
+// This code is the standalone counting game mode and there is no UI or controls, just counting. This code is old and may not work anymore.
+
+
+
 #include "LCDIC2.h"
 
 LCDIC2 lcd(0x27, 16, 2);
