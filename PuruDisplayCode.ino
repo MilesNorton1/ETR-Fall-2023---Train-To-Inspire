@@ -1,3 +1,7 @@
+//This code is old and only includes the programming for the display, this probably no longer works.
+
+
+
 #include <Wire.h>
 
 #include "LCDIC2.h"
