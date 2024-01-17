@@ -2,9 +2,9 @@
 
 LCDIC2 lcd(0x27, 16, 2);
 
-const int numLeds = 8;
-const int ledPins[] = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-const int pirPins[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
+const int numLeds = 10;
+const int ledPins[] = {22, 23, 24, 25, 26, 27, 29, 28, 30, 31};  
+const int pirPins[] = {38, 39, 40, 41, 42, 43, 44, 45, 46, 47};
 
 int numWhacksToWin = 20;  // Set the number of whacks needed to win the game
 int whacksCounter = 0;   // Counter to keep track of whacks
