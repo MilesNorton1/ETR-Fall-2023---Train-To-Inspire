@@ -1,4 +1,4 @@
-
+// This is the early build for our final code when we combined the gamemodes with the interface code.
 
 #include <Wire.h>
 
